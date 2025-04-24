@@ -82,7 +82,7 @@ int main(int argc, char **argv) {
 
     r = ioctl(req.fd, GPIO_V2_LINE_GET_VALUES_IOCTL, values);
     if (r < 0) {
-        printf("Get Button value error(%d): %m\n", GPIO_BUTTON, errno);
+        printf("Get Button value error(%d): %m\n", errno);
         ret = r;
         goto exit_line_close;
     }
