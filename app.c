@@ -64,7 +64,7 @@ int main(int argc, char **argv) {
     pin_set_bit(&req.config.attrs[0].mask, 0);
     req.config.attrs[0].attr.id = GPIO_V2_LINE_ATTR_ID_DEBOUNCE;
     req.config.attrs[0].attr.debounce_period_us = BUTTON_DEBOUNCE_US;
-    req.config.num_attrs = 1;
+    // req.config.num_attrs = 1;
     strcpy(req.consumer, "Monitor");
 
     r = ioctl(fd, GPIO_V2_GET_LINE_IOCTL, &req);
