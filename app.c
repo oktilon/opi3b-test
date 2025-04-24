@@ -27,24 +27,24 @@ static inline void pin_set_bit(__u64 *b, int n) {
 	*b |= _BITULL(n);
 }
 
-static inline void pin_change_bit(__u64 *b, int n) {
-	*b ^= _BITULL(n);
-}
+// static inline void pin_change_bit(__u64 *b, int n) {
+// 	*b ^= _BITULL(n);
+// }
 
-static inline void pin_clear_bit(__u64 *b, int n) {
-	*b &= ~_BITULL(n);
-}
+// static inline void pin_clear_bit(__u64 *b, int n) {
+// 	*b &= ~_BITULL(n);
+// }
 
 static inline int pin_test_bit(__u64 b, int n) {
 	return !!(b & _BITULL(n));
 }
 
-static inline void gpiotools_assign_bit(__u64 *b, int n, bool value) {
-	if (value)
-		gpiotools_set_bit(b, n);
-	else
-		gpiotools_clear_bit(b, n);
-}
+// static inline void gpiotools_assign_bit(__u64 *b, int n, bool value) {
+// 	if (value)
+// 		gpiotools_set_bit(b, n);
+// 	else
+// 		gpiotools_clear_bit(b, n);
+// }
 
 
 int main(int argc, char **argv) {
@@ -83,7 +83,7 @@ int main(int argc, char **argv) {
     /* Read initial states */
     values.mask = 0;
     values.bits = 0;
-    gpiotools_set_bit(&values.mask, 0);
+    pin_set_bit(&values.mask, 0);
 
     r = ioctl(req.fd, GPIO_V2_LINE_GET_VALUES_IOCTL, values);
     if (r < 0) {
@@ -93,7 +93,7 @@ int main(int argc, char **argv) {
     }
 
     printf("Initial line value: %d\n",
-        gpiotools_test_bit(values.bits, 0));
+        pin_test_bit(values.bits, 0));
 
     while (1) {
         struct gpio_v2_line_event event;
@@ -116,7 +116,7 @@ int main(int argc, char **argv) {
             break;
         }
 
-        printf("GPIO EVENT at %lu on line %d (%d|%d) "
+        printf("GPIO EVENT at %;lu on line %d (%d|%d) "
             , event.timestamp_ns
             , event.offset
             , event.line_seqno
