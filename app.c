@@ -59,10 +59,10 @@ int main(int argc, char **argv) {
     memset(&req, 0, sizeof(req));
     req.offsets[0] = GPIO_BUTTON;
     req.num_lines = 1;
-    req.config.flags = GPIO_V2_LINE_FLAG_INPUT | GPIO_V2_LINE_FLAG_EDGE_FALLING; // | GPIO_V2_LINE_EVENT_RISING_EDGE;
-    // config.attrs[0].attr.id = GPIO_V2_LINE_ATTR_ID_DEBOUNCE;
-    // config.attrs[0].attr.debounce_period_us = BUTTON_DEBOUNCE_US;
-    // config.num_attrs = 1;
+    req.config.flags = GPIO_V2_LINE_FLAG_INPUT | GPIO_V2_LINE_FLAG_EDGE_FALLING | GPIO_V2_LINE_EVENT_RISING_EDGE;
+    req.config.attrs[0].attr.id = GPIO_V2_LINE_ATTR_ID_DEBOUNCE;
+    req.config.attrs[0].attr.debounce_period_us = BUTTON_DEBOUNCE_US;
+    req.config.num_attrs = 1;
     strcpy(req.consumer, "Button");
 
     r = ioctl(fd, GPIO_V2_GET_LINE_IOCTL, &req);
@@ -72,7 +72,7 @@ int main(int argc, char **argv) {
         ret = r;
         goto exit_device_close;
     }
-    printf("Init Button done(%d)\n", r);
+    printf("Init Button done(%d) fd=%d\n", r, req.fd);
 
 
     /* Read initial states */
@@ -82,7 +82,7 @@ int main(int argc, char **argv) {
 
     r = ioctl(req.fd, GPIO_V2_LINE_GET_VALUES_IOCTL, values);
     if (r < 0) {
-        printf("Get GPIO%d (Button) value error(%d): %m\n", GPIO_BUTTON, errno);
+        printf("Get Button value error(%d): %m\n", GPIO_BUTTON, errno);
         ret = r;
         goto exit_line_close;
     }
