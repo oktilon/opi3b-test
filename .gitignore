@@ -1,0 +1,7 @@
+# VSCode
+.vscode*
+
+# Meson build folders
+build
+dist
+builddir
