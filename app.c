@@ -59,9 +59,9 @@ int main(int argc, char **argv) {
 
     memset(&config, 0, sizeof(config));
     config.flags = GPIO_V2_LINE_FLAG_INPUT | GPIO_V2_LINE_FLAG_EDGE_FALLING | GPIO_V2_LINE_EVENT_RISING_EDGE;
-    config.attrs[0].attr.id = GPIO_V2_LINE_ATTR_ID_DEBOUNCE;
-    config.attrs[0].attr.debounce_period_us = BUTTON_DEBOUNCE_US;
-    config.num_attrs = 1;
+    // config.attrs[0].attr.id = GPIO_V2_LINE_ATTR_ID_DEBOUNCE;
+    // config.attrs[0].attr.debounce_period_us = BUTTON_DEBOUNCE_US;
+    // config.num_attrs = 1;
 
     memset(&req, 0, sizeof(req));
     req.offsets[0] = GPIO_BUTTON;
@@ -72,11 +72,11 @@ int main(int argc, char **argv) {
     r = ioctl(fd, GPIO_V2_GET_LINE_IOCTL, &req);
 
     if (r < 0) {
-        printf("Init GPIO%d (Button) error(%d): %m\n", GPIO_BUTTON, errno);
+        printf("Init Button error(%d): %m\n", errno);
         ret = r;
         goto exit_device_close;
     }
-    printf("Init GPIO%d (Button) ok(%d)\n", GPIO_BUTTON, r);
+    printf("Init Button done(%d)\n", r);
 
 
     /* Read initial states */
