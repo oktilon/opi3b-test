@@ -5,6 +5,7 @@
 #include <string.h>
 #include <signal.h>
 #include <unistd.h>
+#include <types.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <sys/ioctl.h>
@@ -13,9 +14,10 @@
 #define GPIO3                       "/dev/gpiochip3"
 #define GPIO_BUTTON                 23 // RK_PC7
 
+static struct gpiohandle_request    btn = {0};
 
 int main(int argc, char **argv) {
-    int fd;
+    int fd, r;
 
     printf("Opening %s...\n", GPIO3);
     fd = open(GPIO3, O_RDWR);
@@ -26,8 +28,17 @@ int main(int argc, char **argv) {
     }
 
     /* Setup Button GPIO to input */
-    // r = pin_init_gpio(fd, GPIO_BUTTON, GPIOHANDLE_REQUEST_INPUT, "Button", &btn);
-    // if (r) goto error;
+    btn.flags = GPIOHANDLE_REQUEST_INPUT;
+    strcpy(btn.consumer_label, "Button");
+    memset(btn.default_values, 0, sizeof(btn.default_values));
+    btn.lines = 1;
+    btn.lineoffsets[0] = GPIO_BUTTON;
+
+    if ((r = ioctl(fd, GPIO_GET_LINEHANDLE_IOCTL, &btn)) < 0) {
+        printf("Init GPIO%d (Button) error(%d): %m", GPIO_BUTTON, errno);
+    } else {
+        printf("Init GPIO%d (Button) ok(%d)", GPIO_BUTTON, r);
+    }
 
     printf("Closing...\n");
     close(fd);
