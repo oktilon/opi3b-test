@@ -59,12 +59,12 @@ int main(int argc, char **argv) {
     memset(&req, 0, sizeof(req));
     req.offsets[0] = GPIO_BUTTON;
     req.num_lines = 1;
-    req.config.flags = GPIO_V2_LINE_FLAG_INPUT | GPIO_V2_LINE_FLAG_EDGE_FALLING | GPIO_V2_LINE_EVENT_RISING_EDGE;
+    req.config.flags = GPIO_V2_LINE_FLAG_INPUT | GPIO_V2_LINE_FLAG_EDGE_FALLING | GPIO_V2_LINE_FLAG_EDGE_RISING;
 
-    // pin_set_bit(&req.config.attrs[0].mask, 0);
-    // req.config.attrs[0].attr.id = GPIO_V2_LINE_ATTR_ID_DEBOUNCE;
-    // req.config.attrs[0].attr.debounce_period_us = BUTTON_DEBOUNCE_US;
-    // req.config.num_attrs = 1;
+    pin_set_bit(&req.config.attrs[0].mask, 0);
+    req.config.attrs[0].attr.id = GPIO_V2_LINE_ATTR_ID_DEBOUNCE;
+    req.config.attrs[0].attr.debounce_period_us = BUTTON_DEBOUNCE_US;
+    req.config.num_attrs = 1;
     strcpy(req.consumer, "Monitor");
 
     r = ioctl(fd, GPIO_V2_GET_LINE_IOCTL, &req);
