@@ -86,11 +86,11 @@ int main(int argc, char **argv) {
     if (r < 0) {
         printf("Get Button value error(%d): %m\n", errno);
         ret = r;
-        goto exit_line_close;
+        //goto exit_line_close;
+    } else {
+        printf("Initial line value: %d\n",
+            pin_test_bit(values.bits, 0));
     }
-
-    printf("Initial line value: %d\n",
-        pin_test_bit(values.bits, 0));
 
     while (1) {
         struct gpio_v2_line_event event;
