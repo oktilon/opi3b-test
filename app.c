@@ -16,7 +16,6 @@
 #define GPIO_BUTTON                 23 // RK_PC7
 #define BUTTON_DEBOUNCE_US          50
 
-static struct gpio_v2_line_config   config;
 static struct gpio_v2_line_request  req;
 static struct gpio_v2_line_values   values;
 
@@ -57,16 +56,13 @@ int main(int argc, char **argv) {
         return -1;
     }
 
-    memset(&config, 0, sizeof(config));
-    config.flags = GPIO_V2_LINE_FLAG_INPUT | GPIO_V2_LINE_FLAG_EDGE_FALLING | GPIO_V2_LINE_EVENT_RISING_EDGE;
-    // config.attrs[0].attr.id = GPIO_V2_LINE_ATTR_ID_DEBOUNCE;
-    // config.attrs[0].attr.debounce_period_us = BUTTON_DEBOUNCE_US;
-    // config.num_attrs = 1;
-
     memset(&req, 0, sizeof(req));
     req.offsets[0] = GPIO_BUTTON;
     req.num_lines = 1;
-    req.config = config;
+    req.config.flags = GPIO_V2_LINE_FLAG_INPUT | GPIO_V2_LINE_FLAG_EDGE_FALLING; // | GPIO_V2_LINE_EVENT_RISING_EDGE;
+    // config.attrs[0].attr.id = GPIO_V2_LINE_ATTR_ID_DEBOUNCE;
+    // config.attrs[0].attr.debounce_period_us = BUTTON_DEBOUNCE_US;
+    // config.num_attrs = 1;
     strcpy(req.consumer, "Button");
 
     r = ioctl(fd, GPIO_V2_GET_LINE_IOCTL, &req);
