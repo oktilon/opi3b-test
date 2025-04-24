@@ -16,7 +16,6 @@
 #define GPIO_BUTTON                 23 // RK_PC7
 #define BUTTON_DEBOUNCE_US          50
 
-static struct gpiohandle_request    btn = {0};
 static struct gpio_v2_line_config   config;
 static struct gpio_v2_line_request  req;
 static struct gpio_v2_line_values   values;
@@ -116,7 +115,7 @@ int main(int argc, char **argv) {
             break;
         }
 
-        printf("GPIO EVENT at %;lu on line %d (%d|%d) "
+        printf("GPIO EVENT at %llu on line %d (%d|%d) "
             , event.timestamp_ns
             , event.offset
             , event.line_seqno
